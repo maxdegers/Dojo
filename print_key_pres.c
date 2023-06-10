@@ -3,8 +3,8 @@
 #include <conio.h>
 int main()
 {
-    char input;
-    while (1 == 1)
+    char input, var = 1 ;
+    while (var == 1)
     {
         // scanf("%c", &input);
         input = getch();
@@ -18,6 +18,11 @@ int main()
             putchar((input & (1 << i)) ? '1' : '0');
         }
         printf("\n\n");
+        if (input == 'q')
+        {
+            var = 0;
+        }
+        
     }
 
     return 0;
