@@ -1,4 +1,4 @@
 /* Repertoire d'outils*/
 #include "utils.c"
 
-void end();
+void end();  /*    #include "..\utils.h"    */
