@@ -6,23 +6,39 @@
 #include <stdlib.h>
 #include <string.h>
 
-char *storage[100];
-void initialization()
+
+char** initialization(int line_count)
 {
-    for (int i = 0; i < 100; i++)
+    char **storage = malloc(30*line_count);
+    for (int i = 0; i < line_count; i++)
     {
         storage[i] = NULL;
     }
+    return storage;
+}
+int count_line(char *name){
+    FILE *fp = fopen(name, "r");
+    char line[30];
+    int line_count = 0 ;
+    while (fgets(line, 30, fp) != NULL)
+    {
+        line_count += 1;
+    }
+    fclose(fp);
+    return line_count;
 }
 
-void read_file(char *name)
+
+char** read_file(char *name, int line_count)
 {
     FILE *fp = fopen(name, "r");
     int storage_index;
     storage_index = 0;
     char line[30];
     char *string_reference;
-
+    char ** storage;
+    storage = initialization(line_count);
+    fp = fopen(name, "r");
     while (fgets(line, 30, fp) != NULL)
     {
         string_reference = malloc(30);
@@ -32,48 +48,49 @@ void read_file(char *name)
     }
     fclose(fp);
 
-    for (int i = 0; i < storage_index; i++)
-    {
-        printf("%s", storage[i]);
-    }
+    // for (int i = 0; i < storage_index; i++)
+    // {
+    //     printf("%s", storage[i]);
+    // }
+    return storage;
 }
 
-void sort_storage(char *order)
+void sort_storage(char *order, char**storage, int line_count)
 {
-    int var = 0;
+    char* var;
     int swap = 0;
     while (swap == 0)
     {
         swap = 1;
-        // if (strcmp(order, "--asc") == 0)
-        if (var == 0)
+        if (strcmp(order, "--asc") == 0)
         {
-            for (int i = 0; storage[i] != NULL; i++)
+            for (int i = 0; i < line_count -1; i++)
             {
                 if (storage[i][0] > storage[i + 1][0])
                 {
-                    storage[100] = storage[i];
+                    var = storage[i];
                     storage[i] = storage[i + 1];
-                    storage[i + 1] = storage[100];
+                    storage[i + 1] = var;
                     swap = 0;
                 }
+                
             }
         }
         else
         {
-            for (int i = 0; storage[i] != NULL; i++)
+            for (int i = 0; i < line_count-1; i++)
             {
                 if (storage[i][0] < storage[i + 1][0])
                 {
-                    storage[100] = storage[i];
+                    var = storage[i];
                     storage[i] = storage[i + 1];
-                    storage[i + 1] = storage[100];
+                    storage[i + 1] = var;
                     swap = 0;
                 }
             }
         }
     }
-    for (int i = 0; storage[i] != NULL; i++)
+    for (int i = 0; i <line_count; i++)
     {
         printf("%s", storage[i]);
     }
@@ -81,38 +98,43 @@ void sort_storage(char *order)
 
     
 
-void Deallocate_memory()
+void Deallocate_memory(char **storage, int line_count)
 {
-    for (int i = 0; storage[i] != NULL; i++)
+    for (int i = 0; i < line_count; i++)
     {
         free(storage[i]);
         storage[i] = NULL;
     }
+    free(storage);
 }
 
 int main(int argc, char **argv)
 {
-    // if (strcmp(argv[3], "--asc") != 0 && strcmp(argv[3], "--desc") != 0)
-    // {
-    //     printf("parameter mising\n");
-    //     printf("usage: <--asc|--desc> \n");
-    //     printf("Ex : %s --file student.tad --asc", argv[0]);
-    //     return 1;
-    // }
     // validate inputted arguments
+    
     if (argc < 4)
     {
         printf("parameter mising\n");
         printf("Ex : --file student.tad --asc");
+        return 1;
+    }
+    if (strcmp(argv[3], "--asc") != 0 && strcmp(argv[3], "--desc") != 0)
+    {
+        printf("parameter mising\n");
+        printf("usage: <--asc|--desc> \n");
+        printf("Ex : %s --file student.tad --asc", argv[0]);
         return 2;
     }
+    /////////////////////
+    char ** storage;
+    int line_count;
     printf("main.begin\r\n");
+    line_count = count_line(argv[2]);
+    storage = read_file(argv[2],line_count);
 
-    read_file(argv[2]);
+    sort_storage(argv[3], storage,line_count);
 
-    sort_storage(argv[3]);
-
-    Deallocate_memory();
+    Deallocate_memory(storage,line_count);
 
     printf("\rmain.end");
     return 0;
