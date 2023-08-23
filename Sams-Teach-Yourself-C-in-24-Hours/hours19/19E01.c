@@ -1,7 +1,7 @@
 /* Ex 1 page 311*/
 #include <stdio.h>
 struct automobile{
-        int year;
+        int* year;
         char model[10];
         int engine_power;
         double weight;
@@ -18,7 +18,7 @@ V porche ={
     3000.55};
 int main()
 {
-    printf("%d\n",sedan.year);
+    printf("%d\n",sedan->year);
     printf("%s\n",sedan.model);
     printf("%d\n",sedan.engine_power);
     printf("%0.2f\n",sedan.weight);
