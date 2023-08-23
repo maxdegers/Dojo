@@ -11,7 +11,7 @@ struct automobile{
         200,
         2345.67};
 typedef struct automobile V;
-V porche ={
+V porsche ={
     2023,
     "GBC",
     200,
@@ -23,9 +23,9 @@ int main()
     printf("%d\n",sedan.engine_power);
     printf("%0.2f\n",sedan.weight);
     
-    printf("\n%d\n",porche.year);
-    printf("%s\n",porche.model);
-    printf("%d\n",porche.engine_power);
-    printf("%0.2f\n",porche.weight);
+    printf("\n%d\n",porsche.year);
+    printf("%s\n",porsche.model);
+    printf("%d\n",porsche.engine_power);
+    printf("%0.2f\n",porsche.weight);
     return 0;
 }
